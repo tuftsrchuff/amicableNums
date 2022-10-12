@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amicable Numbers</title>
+    <script>
+
+        let num1;
+        let num2;
+
+        //Main function called by form. Determines whether entered numbers are
+        //amicable.
+        function amicableNumCalc(){
+            amicable = true;
+            factors1 = [];
+            factors2 = [];
+
+            readValues();
+
+            //Determine all factors of num1/num2
+            for(i = 1; i < num1; i++){
+                if(isAFactor(num1,i)) factors1.push(i);
+            }
+
+            for(j=1; j < num2; j++){
+                if(isAFactor(num2,j)) factors2.push(j);
+            }
+
+            displayFactors(factors1, factors2);
+
+            amicable = amicableCheck(factors1, factors2);
+
+            displayAmicable(amicable);
+        }
+
+        //Read in values on text fields and assign to variables
+        function readValues(){
+            console.log("readValues");
+            num1 = document.numform.t1.value;
+            num2 = document.numform.t2.value;
+        }
+
+        //Check to determine if y is a factor of x
+        function isAFactor(x,y){
+            if(x%y == 0) return true;
+            else false;
+        }
+
+        //Create string to insert into DOM. Contains factor information from
+        //passed in arrays.
+        function displayFactors(factors1, factors2){
+            factor1String = "";
+            factor2String = "";
+            
+            for(i=0; i < factors1.length; i++){
+                if(i == factors1.length - 1){
+                    factor1String += " " + factors1[i];
+                }else {
+                    factor1String += " " + factors1[i] + ",";
+                }
+            }
+            document.getElementById("factors1").innerHTML = num1 + " factors:" + factor1String;
+
+            for(i=0; i < factors2.length; i++){
+                if(i == factors2.length - 1){
+                    factor2String += " " + factors2[i];
+                }else {
+                    factor2String += " " + factors2[i] + ",";
+                }
+            }
+            document.getElementById("factors2").innerHTML = num2 + " factors:" + factor2String;
+        }
+
+        //Adds all factors to determine whether the two numbers are amicable.
+        function amicableCheck(factors1, factors2){
+            totalFac1 = 0;
+            totalFac2 = 0;
+
+            factors1.forEach(function(value){
+                totalFac1 += value;
+            });
+
+            factors2.forEach(function(value){
+                totalFac2 += value;
+            });
+
+            if(totalFac1 == num2 && totalFac2 == num1) {
+                return true;
+            } else{
+                return false;
+            }
+        }
+
+        //Insert amicable determination into DOM
+        function displayAmicable(amicable){
+            document.getElementById("amicable").innerHTML = "The numbers " + num1 + " and " + num2 + " are " + (amicable ? " amicable!" : "not amicable!");
+        }
+    </script>
+</head>
+<body>
+    <form method="get" action="#" name="numform" onsubmit="amicableNumCalc(); return false;">
+       <p>Number 1: <input type="text" name="t1"></p>
+       <p>Number 2: <input type="text" name="t2"></p>
+       <input type="button" onclick="amicableNumCalc()" value='Check Amicable'>
+    </form>
+    <div>
+        <p id="amicable"></p>
+    </div>
+    <div>
+        <p id="factors1"></p>
+        <p id="factors2"></p>
+    </div>
+</body>
+</html>
